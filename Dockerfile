@@ -4,7 +4,7 @@ WORKDIR /src
 RUN go build
 
 FROM alpine:edge
-COPY --from=build /src/src /bot
+COPY --from=build /src/openplanet-bot /bot
 
 WORKDIR /
 ENTRYPOINT [ "/bot" ]
