@@ -9,9 +9,7 @@ import (
 	"github.com/codecat/go-libs/log"
 )
 
-var keepAlive bool = true
-
-func checkReport(info *configRemoteInfo) {
+func checkReportRemote(info *configRemoteInfo) {
 	log.Info("⚠ New update! %s = %s", info.Name, info.LastModified)
 
 	for _, channelID := range info.Channels {
@@ -62,15 +60,15 @@ func checkRemote(info *configRemoteInfo) bool {
 
 	if lastModified.After(lastKnownModified) {
 		info.LastModified = lastModified.Format(time.RFC3339)
-		checkReport(info)
+		checkReportRemote(info)
 		return true
 	}
 
 	return false
 }
 
-func checker(info *configRemoteInfo) {
-	for keepAlive {
+func checkerRemote(info *configRemoteInfo) {
+	for gKeepAlive {
 		if checkRemote(info) {
 			saveConfig()
 		}

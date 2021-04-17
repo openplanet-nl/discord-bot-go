@@ -10,19 +10,35 @@ import (
 
 type configRemoteInfo struct {
 	Name     string
-	URL      string
 	Channels []string
+	URL      string
 
 	LastModified string
+}
+
+type configNadeoTitle struct {
+	Name     string
+	Channels []string
+	ID       string
+
+	Timestamp string
 }
 
 type configDiscord struct {
 	Token string
 }
 
+type configNadeoServices struct {
+	Email    string
+	Password string
+}
+
 type configData struct {
-	Discord configDiscord
-	Remotes []*configRemoteInfo
+	Discord       configDiscord
+	NadeoServices configNadeoServices
+
+	NadeoTitles []*configNadeoTitle
+	Remotes     []*configRemoteInfo
 }
 
 var appConfig configData

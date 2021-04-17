@@ -37,6 +37,6 @@ func discordClose() {
 	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, os.Kill)
 	<-sc
 
-	keepAlive = false
+	gKeepAlive = false
 	appDiscord.Close()
 }
