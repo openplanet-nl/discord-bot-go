@@ -40,7 +40,7 @@ func checkTitle(title *configNadeoTitle) bool {
 			"https://prod.trackmania.core.nadeo.online/encryptedPackages/?titleIdList=%s",
 			title.ID,
 		),
-		false,
+		0,
 	)
 
 	if err != nil {

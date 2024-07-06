@@ -1,7 +1,6 @@
 package main
 
 import (
-	"io/ioutil"
 	"os"
 
 	"github.com/codecat/go-libs/log"
@@ -44,7 +43,7 @@ type configData struct {
 var appConfig configData
 
 func loadConfig() {
-	configBytes, err := ioutil.ReadFile("config.toml")
+	configBytes, err := os.ReadFile("config.toml")
 	if err != nil {
 		log.Error("Unable to read config.toml file: %s", err.Error())
 		return
@@ -70,7 +69,7 @@ func saveConfig() {
 		return
 	}
 
-	err = ioutil.WriteFile("config.toml", configBytes, 0644)
+	err = os.WriteFile("config.toml", configBytes, 0644)
 	if err != nil {
 		log.Error("Unable to write to config file: %s", err.Error())
 		return

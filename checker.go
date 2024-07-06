@@ -43,7 +43,7 @@ func checkRemote(info *configRemoteInfo) bool {
 		return false
 	}
 
-	req.Header.Set("User-Agent", "Openplanet Bot v3 / @Miss#8888 / Openplanet.nl")
+	req.Header.Set("User-Agent", "Openplanet Bot / @miss / miss@openplanet.dev")
 
 	client := http.Client{}
 	res, err := client.Do(req)

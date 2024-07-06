@@ -12,6 +12,7 @@ func main() {
 	loadConfig()
 
 	gServices = nadeo.NewNadeoWithAudience("NadeoServices")
+	gServices.SetUserAgent("Openplanet Bot / @miss / miss@openplanet.dev")
 	if err := gServices.AuthenticateUbi(appConfig.NadeoServices.Email, appConfig.NadeoServices.Password); err != nil {
 		log.Error("Unable to authenticate with Nadeo services: %s", err.Error())
 		return
