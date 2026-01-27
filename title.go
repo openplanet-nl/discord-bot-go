@@ -40,7 +40,7 @@ func checkReportTitle(title *configNadeoTitle) {
 func checkTitle(title *configNadeoTitle) bool {
 	res, err := gServices.Get(
 		fmt.Sprintf(
-			"https://prod.trackmania.core.nadeo.online/encryptedPackages/?titleIdList=%s",
+			"https://prod.trackmania.core.nadeo.online/encryptedPackages/by-title/?titleIdList=%s",
 			title.ID,
 		),
 		0,
