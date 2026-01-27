@@ -30,7 +30,7 @@ func checkReportTitle(title *configNadeoTitle) {
 			title.Timestamp,
 		)
 
-		_, err := appDiscord.ChannelMessageSend(channelID, line)
+		_, err := gDiscord.ChannelMessageSend(channelID, line)
 		if err != nil {
 			logrus.Warn("Unable to send message to channel with ID ", channelID)
 		}

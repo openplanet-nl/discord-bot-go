@@ -9,22 +9,22 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-var appDiscord *discordgo.Session
+var gDiscord *discordgo.Session
 
 func discordReady(s *discordgo.Session, event *discordgo.Ready) {
-	logrus.Info("Discord connected: ", appDiscord.State.User)
+	logrus.Info("Discord connected: ", gDiscord.State.User)
 }
 
 func discordOpen() error {
 	var err error
-	appDiscord, err = discordgo.New("Bot " + appConfig.Discord.Token)
+	gDiscord, err = discordgo.New("Bot " + appConfig.Discord.Token)
 	if err != nil {
 		return err
 	}
 
-	appDiscord.AddHandler(discordReady)
+	gDiscord.AddHandler(discordReady)
 
-	err = appDiscord.Open()
+	err = gDiscord.Open()
 	if err != nil {
 		return err
 	}
@@ -38,5 +38,5 @@ func discordClose() {
 	<-sc
 
 	gKeepAlive = false
-	appDiscord.Close()
+	gDiscord.Close()
 }
