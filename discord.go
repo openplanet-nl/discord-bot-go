@@ -6,13 +6,13 @@ import (
 	"syscall"
 
 	"github.com/bwmarrin/discordgo"
-	"github.com/codecat/go-libs/log"
+	"github.com/sirupsen/logrus"
 )
 
 var appDiscord *discordgo.Session
 
 func discordReady(s *discordgo.Session, event *discordgo.Ready) {
-	log.Info("Discord connected: %s", appDiscord.State.User)
+	logrus.Info("Discord connected: ", appDiscord.State.User)
 }
 
 func discordOpen() error {

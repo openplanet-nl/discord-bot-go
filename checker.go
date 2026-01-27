@@ -6,11 +6,14 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/codecat/go-libs/log"
+	"github.com/sirupsen/logrus"
 )
 
 func checkReportRemote(info *configRemoteInfo) {
-	log.Info("⚠ New update! %s = %s", info.Name, info.LastModified)
+	logrus.WithFields(logrus.Fields{
+		"name":          info.Name,
+		"last-modified": info.LastModified,
+	}).Info("⚠ New update!")
 
 	for _, channelID := range info.Channels {
 		line := fmt.Sprintf(
@@ -22,7 +25,7 @@ func checkReportRemote(info *configRemoteInfo) {
 
 		_, err := appDiscord.ChannelMessageSend(channelID, line)
 		if err != nil {
-			log.Warn("Unable to send message to channel with ID %s", channelID)
+			logrus.Warn("Unable to send message to channel with ID ", channelID)
 		}
 	}
 }
@@ -33,13 +36,13 @@ func checkRemote(info *configRemoteInfo) bool {
 		var err error
 		lastKnownModified, err = time.Parse(time.RFC3339, info.LastModified)
 		if err != nil {
-			log.Warn("Invalid date format: %s", err.Error())
+			logrus.WithError(err).Warn("Invalid date format")
 		}
 	}
 
 	req, err := http.NewRequest("HEAD", info.URL, nil)
 	if err != nil {
-		log.Error("Error creating http request to %s: %s", info.Name, err.Error())
+		logrus.WithError(err).Error("Error creating http request to ", info.Name)
 		return false
 	}
 
@@ -48,13 +51,13 @@ func checkRemote(info *configRemoteInfo) bool {
 	client := http.Client{}
 	res, err := client.Do(req)
 	if err != nil {
-		log.Warn("Error sending http request to %s: %s", info.Name, err.Error())
+		logrus.WithError(err).Warn("Error sending http request to ", info.Name)
 		return false
 	}
 
 	lastModified, err := time.Parse(time.RFC1123, res.Header.Get("Last-Modified"))
 	if err != nil {
-		log.Error("Invalid date format from server: %s", err.Error())
+		logrus.WithError(err).Error("Invalid date format from server")
 		return false
 	}
 

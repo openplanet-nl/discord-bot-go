@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/codecat/go-libs/log"
 	nadeo "github.com/codecat/gonadeo"
+	"github.com/sirupsen/logrus"
 )
 
 var gServices nadeo.Nadeo
@@ -14,12 +14,12 @@ func main() {
 	gServices = nadeo.NewNadeoWithAudience("NadeoServices")
 	gServices.SetUserAgent("Openplanet Bot / @miss / miss@openplanet.dev")
 	if err := gServices.AuthenticateUbi(appConfig.NadeoServices.Email, appConfig.NadeoServices.Password); err != nil {
-		log.Error("Unable to authenticate with Nadeo services: %s", err.Error())
+		logrus.WithError(err).Error("Unable to authenticate with Nadeo services")
 		return
 	}
 
 	if err := discordOpen(); err != nil {
-		log.Error("Unable to initialize Discord: %s", err.Error())
+		logrus.WithError(err).Error("Unable to initialize Discord")
 		return
 	}
 

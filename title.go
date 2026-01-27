@@ -6,7 +6,7 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/codecat/go-libs/log"
+	"github.com/sirupsen/logrus"
 )
 
 type encryptedPackage struct {
@@ -18,7 +18,10 @@ type encryptedPackage struct {
 }
 
 func checkReportTitle(title *configNadeoTitle) {
-	log.Info("⚠ New update! %s = %s", title.Name, title.Timestamp)
+	logrus.WithFields(logrus.Fields{
+		"name":      title.Name,
+		"timestamp": title.Timestamp,
+	}).Info("⚠ New update!")
 
 	for _, channelID := range title.Channels {
 		line := fmt.Sprintf(
@@ -29,7 +32,7 @@ func checkReportTitle(title *configNadeoTitle) {
 
 		_, err := appDiscord.ChannelMessageSend(channelID, line)
 		if err != nil {
-			log.Warn("Unable to send message to channel with ID %s", channelID)
+			logrus.Warn("Unable to send message to channel with ID ", channelID)
 		}
 	}
 }
@@ -44,7 +47,7 @@ func checkTitle(title *configNadeoTitle) bool {
 	)
 
 	if err != nil {
-		log.Error("Unable to check title updates: %s", err.Error())
+		logrus.WithError(err).Error("Unable to check title updates")
 		return false
 	}
 
@@ -52,13 +55,13 @@ func checkTitle(title *configNadeoTitle) bool {
 	json.Unmarshal([]byte(res), &packages)
 
 	if len(packages) == 0 {
-		log.Error("Title does not exist: %s", title.ID)
+		logrus.Error("Title does not exist: ", title.ID)
 		return false
 	}
 
 	tm, err := time.Parse(time.RFC3339, packages[0].Timestamp)
 	if err != nil {
-		log.Error("Unable to parse timestamp: %s", err.Error())
+		logrus.WithError(err).Error("Unable to parse timestamp")
 		return false
 	}
 
