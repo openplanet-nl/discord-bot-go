@@ -13,9 +13,15 @@ func main() {
 
 	gServices = nadeo.NewNadeoWithAudience("NadeoServices")
 	gServices.SetUserAgent("Openplanet Bot / @miss / miss@openplanet.dev")
-	if err := gServices.AuthenticateUbi(appConfig.NadeoServices.Email, appConfig.NadeoServices.Password); err != nil {
+
+	var err error
+	if appConfig.NadeoServices.Username != "" {
+		err = gServices.AuthenticateBasic(appConfig.NadeoServices.Username, appConfig.NadeoServices.Password)
+	} else {
+		err = gServices.AuthenticateUbi(appConfig.NadeoServices.Email, appConfig.NadeoServices.Password)
+	}
+	if err != nil {
 		logrus.WithError(err).Error("Unable to authenticate with Nadeo services")
-		return
 	}
 
 	if err := discordOpen(); err != nil {

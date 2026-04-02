@@ -29,6 +29,7 @@ type configDiscord struct {
 
 type configNadeoServices struct {
 	Email    string
+	Username string
 	Password string
 }
 
